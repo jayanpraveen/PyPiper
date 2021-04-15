@@ -1,0 +1,15 @@
+{% extends 'uploads/layout.html' %} {% block body %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="container">
+    {% for x in video %}
+    <h2>{{x.title}}</h2>
+
+    <video width="640" height="360" controls="controls">
+      <source src="{{x.video.url}}" type="video/mp4" />
+    </video>
+
+    {% endfor %}
+  </div>
+</form>
+{% endblock body %}
