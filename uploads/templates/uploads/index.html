@@ -4,7 +4,6 @@
   <div class="container">
     {% for x in video %}
     <h2>{{x.title}}</h2>
-
     <video width="640" height="360" controls="controls">
       <source src="{{x.video.url}}" type="video/mp4" />
     </video>
