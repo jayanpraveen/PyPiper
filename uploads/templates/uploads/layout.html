@@ -1,10 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Py Piper</title>
+    <title>PyPiper</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'uploads/layout.css' %}"
+    />
   </head>
-  <body>
-    {% block body %}{% endblock body %}
+  <body class="container">
+    <header>
+      <h1>PyPiper</h1>
+      <hr />
+    </header>
+
+    {% block body %} {% endblock body %}
   </body>
 </html>

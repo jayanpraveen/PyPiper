@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 
 *.md
-*.mp4
+media
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
