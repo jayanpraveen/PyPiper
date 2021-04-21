@@ -1,13 +1,9 @@
 {% extends 'uploads/layout.html' %} {% block body %}
 
-<form
-  action="{% url 'media:index' 'v2a' %}"
-  method="post"
-  enctype="multipart/form-data"
->
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <div>
-    {{form.as_p}}
+    {{form.as_ul}}
     <select name="formats">
       {% for key, value in format.items %}
       <option value="{{ key }}">{{ value }}</option>

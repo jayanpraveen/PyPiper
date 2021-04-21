@@ -1,47 +1,49 @@
 import os
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.http.request import HttpRequest
-from django.urls import reverse
 from django.shortcuts import render
 from .models import Upload
-from django.conf import settings
 from . import service
 from .forms import Video_Form
-from django.contrib import messages
+from uploads import models
 
 
-def index(request, key):
+def index(request):
+
     if request.method == 'POST':
+        video_file = request.FILES['video']
+        print(f"\n\n\n{video_file}\n\n\n")
+
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, "Video Uploaded")
+            # print(f"\n\n\n{Upload.objects.all().first()}\n\n\n")
+
+            key = Upload.objects.get(pk=models.get_ui())
             return HttpResponseRedirect(f'/convert/{key}')
 
     else:
         form = Video_Form()
 
     formats = {
-        "v2a": 'MP4 to MP3',
+        "v2a": 'mp4 to mp3',
         "reduce_video": 'Compress video'
     }
 
     return render(request, 'uploads/index.html', {
         "form": form,
+        # "video":
         "format": formats
     })
 
 
-def convert(request,  key):
+def convert(request, key):
 
-    print('\n\n\n==========     KEY    ================ =>', key, "\n\n\n")
+    print(f"\n\n\n{key}\n\n\n")
+
+    service.get_key(key)
     file_info = service.get_file_info()
-
-    file_path = None
-    if key == 'v2a':
-        file_path = service.video_to_audio()
-    if key == 'reduce_video':
-        file_path = service.reduce_bitrate()
+    # file_path = service.video_to_audio()
+    file_path = service.reduce_bitrate()
 
     if os.path.exists(file_path):
         with open(file_path, 'rb') as f:

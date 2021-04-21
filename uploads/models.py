@@ -6,8 +6,13 @@ import os
 import base64
 
 
+def get_ui():
+    return get_video_pk
+
+
 def user_directory_path(instance, filename):
-    name, ext = os.path.splitext(filename)
+    global get_video_pk
+    get_video_pk = instance.pk
     return f'videos/{instance.id}/{filename}'
 
 
