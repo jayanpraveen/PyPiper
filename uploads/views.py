@@ -13,14 +13,15 @@ def index(request):
         if form.is_valid():
             form.save()
             key = Upload.objects.get(pk=models.get_video_pk)
-            return HttpResponseRedirect(f'/{key}/')
+            format = request.POST['formats']
+            return HttpResponseRedirect(f'{format}/{key}/')
 
     else:
         form = Video_Form()
 
     formats = {
+        "reduce_video": 'Compress video',
         "v2a": 'mp4 to mp3',
-        "reduce_video": 'Compress video'
     }
 
     return render(request, 'uploads/index.html', {
@@ -29,9 +30,14 @@ def index(request):
     })
 
 
-def convert(request, key):
+def convert(request, format, key):
     service.get_key(key)
-    service.reduce_bitrate()
+
+    if format == 'reduce_video':
+        service.reduce_bitrate()
+
+    if format == 'v2a':
+        service.video_to_audio()
 
     return render(request, 'uploads/convert.html', {'id': key})
 
@@ -39,7 +45,6 @@ def convert(request, key):
 def download(request, key):
     service.get_key(key)
     file_path = service.get_file_info().out
-
     if os.path.exists(file_path):
         with open(file_path, 'rb') as f:
             response = HttpResponse(f.read(), content_type=service.get_file_info().MIME)

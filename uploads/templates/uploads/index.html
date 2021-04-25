@@ -6,13 +6,11 @@
     {{form.as_ul}}
 
     <div>
-      {% comment %}
       <select name="formats">
         {% for key, value in format.items %}
         <option value="{{ key }}">{{ value }}</option>
         {% endfor %}
       </select>
-      {% endcomment %}
     </div>
 
     <button class="button" type="submit" value="">convert & download</button>

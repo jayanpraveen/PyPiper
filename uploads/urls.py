@@ -6,7 +6,6 @@ from . import views
 app_name = "media"
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<slug:key>/', views.convert, name='convert'),
-    path(f'<slug:key>/download/', views.download, name='download')
-
+    path('<uuid:key>/download/', views.download, name='download'),
+    path('<str:format>/<uuid:key>/', views.convert, name='convert'),
 ]
