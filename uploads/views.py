@@ -11,15 +11,14 @@ def index(request):
 
     if request.method == 'POST':
         video_file = request.FILES['video']
-        print(f"\n\n\n{video_file}\n\n\n")
 
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             # print(f"\n\n\n{Upload.objects.all().first()}\n\n\n")
 
-            key = Upload.objects.get(pk=models.get_ui())
-            return HttpResponseRedirect(f'/convert/{key}')
+            key = Upload.objects.get(pk=models.get_video_pk)
+            return HttpResponseRedirect(f'/{key}/')
 
     else:
         form = Video_Form()
@@ -37,19 +36,20 @@ def index(request):
 
 
 def convert(request, key):
-
-    print(f"\n\n\n{key}\n\n\n")
-
     service.get_key(key)
-    file_info = service.get_file_info()
-    # file_path = service.video_to_audio()
-    file_path = service.reduce_bitrate()
+    service.reduce_bitrate()
+
+    return render(request, 'uploads/convert.html', {'id': key})
+
+
+def download(request, key):
+    service.get_key(key)
+    file_path = service.get_file_info().out
 
     if os.path.exists(file_path):
         with open(file_path, 'rb') as f:
-            response = HttpResponse(f.read(), content_type=file_info.MIME)
+            response = HttpResponse(f.read(), content_type=service.get_file_info().MIME)
             response['Content-Disposition'] = 'attachment; filename=' + \
                 os.path.basename(file_path)
             return response
-
     return Http404

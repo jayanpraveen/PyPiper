@@ -4,10 +4,7 @@ from .validators import validate_file_size
 import uuid
 import os
 import base64
-
-
-def get_ui():
-    return get_video_pk
+from django.conf import settings
 
 
 def user_directory_path(instance, filename):
@@ -24,3 +21,8 @@ class Upload(models.Model):
     def __str__(self):
         return f'{self.id}'
         # return os.path.basename(self.video.name)
+
+    def delete(self, *args, **kwargs):
+        self.video.delete()
+        os.removedirs(f'{settings.MEDIA_ROOT}videos/{get_video_pk}')
+        super().delete(*args, **kwargs)

@@ -9,6 +9,12 @@ import glob
 import shutil
 
 
+# this deletes the input file
+def delete_input_video():
+    pk = get_file_info().uid
+    Upload.objects.get(id=pk).delete()
+
+
 def get_key(key):
     global pk
     pk = key
@@ -22,8 +28,11 @@ def get_file_info():
     file_name = os.path.basename(file_name)
     file_mime = mimetypes.guess_type(path)[0]
 
-    file_info = namedtuple('file_info', ['name', 'ext', 'in_file', 'MIME', 'uid'])
-    return file_info(file_name, file_ext, file_name+file_ext, file_mime, uid)
+    out_file = file_name+file_ext
+    out = os.path.join(settings.MEDIA_ROOT, "completed", out_file)
+
+    file_info = namedtuple('file_info', ['name', 'ext', 'in_file', 'MIME', 'uid', 'out'])
+    return file_info(file_name, file_ext, file_name+file_ext, file_mime, uid, out)
 
 
 def video_to_audio():
@@ -46,7 +55,7 @@ def reduce_bitrate():
     input_file = os.path.join(settings.MEDIA_ROOT, "videos", f'{media.uid}', media.in_file)
     output_file = os.path.join(settings.MEDIA_ROOT, "completed", out_file)
 
-    video_bitrate = '1000k'
+    video_bitrate = '1800k'
 
     proc = (
         ffmpeg.input(input_file)
@@ -55,13 +64,3 @@ def reduce_bitrate():
     proc.run(overwrite_output=True)
 
     return output_file
-
-
-def remove_input_file(input_file):
-    media = get_file_info()
-    try:
-        Upload.objects.get(video=f'videos/{media.uid}/{media.in_file}').delete()
-    except Upload.DoesNotExist:
-        Upload.objects.all().delete()
-    os.remove(input_file)
-    shutil.rmtree(os.path.dirname(input_file))
