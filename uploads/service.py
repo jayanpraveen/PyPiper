@@ -9,10 +9,10 @@ import glob
 import shutil
 
 
-# this deletes the input file
-def delete_input_video():
-    pk = get_file_info().uid
-    Upload.objects.get(id=pk).delete()
+# # this deletes the input file
+# def delete_input_video():
+#     pk = get_file_info().uid
+#     Upload.objects.get(id=pk).delete()
 
 
 def get_key(key):

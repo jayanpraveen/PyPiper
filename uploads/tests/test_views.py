@@ -9,8 +9,8 @@ class TestViews(TestCase):
         self.client = Client()
 
         self.url_index = reverse('media:index')
-        self.url_convert = reverse('media:convert')
-        self.url_download = reverse('media:download')
+        # self.url_convert = reverse('media:convert')
+        # self.url_download = reverse('media:download')
 
     def test_url_index_get(self):
         response = self.client.get(self.url_index)

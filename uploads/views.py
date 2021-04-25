@@ -8,15 +8,10 @@ from uploads import models
 
 
 def index(request):
-
     if request.method == 'POST':
-        video_file = request.FILES['video']
-
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            # print(f"\n\n\n{Upload.objects.all().first()}\n\n\n")
-
             key = Upload.objects.get(pk=models.get_video_pk)
             return HttpResponseRedirect(f'/{key}/')
 
@@ -30,7 +25,6 @@ def index(request):
 
     return render(request, 'uploads/index.html', {
         "form": form,
-        # "video":
         "format": formats
     })
 
