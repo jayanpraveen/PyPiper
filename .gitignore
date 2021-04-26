@@ -2,6 +2,7 @@
 
 *.md
 /media/
+/misc/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

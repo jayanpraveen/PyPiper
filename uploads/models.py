@@ -3,7 +3,6 @@ from django.db.models.fields import Field
 from .validators import validate_file_size
 import uuid
 import os
-import base64
 from django.conf import settings
 
 

@@ -1,0 +1,8 @@
+{% extends 'uploads/layout.html' %} {% block body %}
+<br />
+<div style="text-align: center">
+  <button type="button">
+    <a target="_blank" href="{% url 'media:download' format id %}">download</a>
+  </button>
+</div>
+{% endblock %}

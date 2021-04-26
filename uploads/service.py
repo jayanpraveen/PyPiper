@@ -24,15 +24,19 @@ def get_file_info():
     uid = str(Upload.objects.get(id=pk))
 
     path = glob.glob(f'media/videos/{uid}/*')[0]
+    file = os.path.basename(path)
     file_name, file_ext = os.path.splitext(path)
     file_name = os.path.basename(file_name)
     file_mime = mimetypes.guess_type(path)[0]
 
-    out_file = file_name+file_ext
-    out = os.path.join(settings.MEDIA_ROOT, "completed", out_file)
+    output_file_path = os.path.join(settings.MEDIA_ROOT, "completed", file_name)
 
-    file_info = namedtuple('file_info', ['name', 'ext', 'in_file', 'MIME', 'uid', 'out'])
-    return file_info(file_name, file_ext, file_name+file_ext, file_mime, uid, out)
+    file_info = namedtuple('file_info', ['name', 'ext', 'in_file', 'MIME', 'uid', 'file_path'])
+    return file_info(file_name, file_ext, file, file_mime, uid, output_file_path)
+
+
+def video_to_audio_io():
+    pass
 
 
 def video_to_audio():

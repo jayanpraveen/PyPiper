@@ -1,24 +1,40 @@
 header {
   text-align: center;
-  color: #4682b4;
+  color: #fff;
   font-size: 28px;
 }
 
-body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 20px;
-  background-color: #f0ffff;
-  color: #000814;
-  /* font-weight: 550; */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
 .container {
   display: grid;
   justify-content: center;
+  max-width: 60vh;
+  margin: 30px auto;
+  min-height: 300px;
+  border: 0.5vh solid #f5f5dc;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+body {
+  background-color: steelblue;
+  background-repeat: no-repeat;
+  background-size: 500rem 800rem;
+  font-family: Verdana;
+  color: #f0f8ff;
 }
 
 select,
 button {
-  margin: 10vh;
-  padding: 8px;
-  font-size: 15px;
+  display: grid;
+  justify-content: center;
+  padding: 5px;
+  margin: 2vh;
+  border: 2px solid #fff;
+  border-radius: 1em;
 }
