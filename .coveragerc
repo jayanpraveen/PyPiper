@@ -7,6 +7,12 @@ omit =
         */__init__.py
         */venv/*
         */migrations/*
+        */tests/*
+        manage.py
+        *wsgi.py
+        *urls.py
+        *apps.py
+        *settings*
 
 [report]
 omit =
@@ -14,3 +20,4 @@ omit =
         */usr/local/lib*
         */__init__.py
         */migrations/*
+        */tests/*

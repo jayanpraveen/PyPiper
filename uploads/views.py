@@ -15,6 +15,7 @@ def index(request):
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
+            print(f'\n\n\n\t{request.POST}\n\n\n')
             key = Upload.objects.get(pk=models.get_video_pk)
             format = request.POST['formats']
             return HttpResponseRedirect(reverse('media:convert', kwargs={
@@ -37,7 +38,8 @@ def index(request):
 
 
 def convert(request, format, key):
-    if Upload.objects.filter(pk=key).exists():
+    formats = ["reduce_video", "v2a"]
+    if Upload.objects.filter(pk=key).exists() and format in formats:
         service.get_key(key)
 
         if format == 'reduce_video':
@@ -57,7 +59,6 @@ def download(request, format, key):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
 
     if os.path.exists(file_path):
-        # if os.path.exists(f''):
         service.get_key(key)
         file_path = service.get_file_info().file_path
         if format == 'reduce_video':

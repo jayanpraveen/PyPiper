@@ -21,5 +21,5 @@ class Upload(models.Model):
 
     def delete(self, *args, **kwargs):
         self.video.delete()
-        os.removedirs(f'{settings.MEDIA_ROOT}videos/{get_video_pk}')
+        os.removedirs(f'{settings.MEDIA_ROOT}videos/{self.id}')
         super().delete(*args, **kwargs)
