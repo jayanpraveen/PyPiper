@@ -9,8 +9,8 @@ import uuid
 
 class TestModelUpload(TestCase):
     def setUp(self):
-        self.key = uuid.uuid4()
-        Upload.objects.create(id=self.key, video=f'{self.key}/video.mp4')
+        self.key = '2fce3dcc-f4aa-4bde-9217-b30268b048c2'
+        Upload.objects.create(id=self.key, video=f'videos/{self.key}/f4aa_video.mp4')
         self.id = str(Upload.objects.all().first())
 
     def test_dunder_str(self):
@@ -29,6 +29,6 @@ class TestModelUpload(TestCase):
         self.file_mock.name = 'video.mp4'
         self.file_model = Upload(video=self.file_mock)
         id = self.file_model.id
-
+        video_name = str(id).split('-')[1] + '_' + 'video.mp4'
         self.assertEqual(user_directory_path(self.file_model, 'video.mp4'),
-                         f'videos/{id}/video.mp4')
+                         f'videos/{id}/{video_name}')

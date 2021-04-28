@@ -9,6 +9,7 @@ from django.conf import settings
 def user_directory_path(instance, filename):
     global get_video_pk
     get_video_pk = instance.pk
+    filename = str(instance.pk).split('-')[1] + '_' + filename
     return f'videos/{instance.id}/{filename}'
 
 

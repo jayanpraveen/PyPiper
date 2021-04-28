@@ -18,12 +18,13 @@ class TestViews(TestCase):
         self.client = Client()
 
         self.format = 'v2a'
-        self.key = uuid.uuid4()
+        self.key = '058ba73c-f897-4aca-938e-f84c119740e2'
 
-        Upload.objects.create(id=self.key, video=f'{self.key}/video.mp4')
+        Upload.objects.create(id=self.key, video=f'videos/{self.key}/f897_video.mp4')
 
         self.url_index = reverse('media:index')
         self.url_convert = reverse('media:convert', args=[self.format, self.key])
+        self.url_download = reverse('media:download', args=[self.format, self.key])
 
     def test_url_index_get(self):
         """Result: Index page could not be loaded properly"""
@@ -45,24 +46,19 @@ class TestViews(TestCase):
         response = self.client.get(url_invalid_id)
         self.assertEquals(response.status_code, 404)
 
-    def test_url_index_post(self):
-        """Result: post Index page could not be loaded properly"""
-        ui = uuid.uuid4()
-        Upload.objects.create(
-            id=ui,
-            video=f'videos/{ui}/video.mp4'
-        )
-
-        self.file_mock = mock.MagicMock(spec=File)
-        self.file_mock.name = 'video.mp4'
-        self.file_model = Upload(video=self.file_mock)
-
-        loaded_file = BytesIO(b"some dummy bcode data: \x00\x01")
-        loaded_file.name = 'vid.mp4'
-
-        response = self.client.post(self.url_index, files={
-            'video': loaded_file
+    # note: place a video of the same name in the respective dir
+    def test_url_convert_get_found(self):
+        """Convert page could not be loaded"""
+        response = self.client.get(self.url_convert, {
+            'format': self.format,
+            'key': self.key
         })
+        self.assertEquals(response.status_code, 200)
 
-        print(response.FILES)
-        self.assertEqual(response.status_code, 200)
+    def test_url_download_get_found(self):
+        """Convert page could not be loaded"""
+        response = self.client.get(self.url_download, {
+            'format': self.format,
+            'key': self.key
+        })
+        self.assertEquals(response.status_code, 200)
