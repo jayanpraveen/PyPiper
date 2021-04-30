@@ -1,5 +1,4 @@
 import os
-from os import path
 from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -43,7 +42,7 @@ def convert(request, format, key):
         service.get_key(key)
 
         if format == 'reduce_video':
-            service.reduce_bitrate()
+            service.reduce_video()
 
         if format == 'v2a':
             service.video_to_audio()
