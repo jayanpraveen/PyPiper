@@ -2,22 +2,19 @@
 
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  <div>
+  <div><br>
     {{form.as_ul}}
 
     <div>
-      <select name="formats">
-        {% for key, value in format.items %}
-        <option value="{{ key }}">{{ value }}</option>
-        {% endfor %}
-      </select>
+       <select name="formats" id="formats">
+            <option value="reduce_video">Compress video</option>
+            <option value="v2a">mp4 to mp3</option>
+       </select>
     </div>
+    
 
     <button class="button" type="submit" value="">convert & download</button>
   </div>
 </form>
 
 {% endblock body %}
-<script></script>
-
-{% comment %} action="{% url 'media:convert' 'v2a' %}" {% endcomment %}

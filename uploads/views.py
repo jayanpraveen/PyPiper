@@ -14,7 +14,6 @@ def index(request):
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            print(f'\n\n\n\t{request.POST}\n\n\n')
             key = Upload.objects.get(pk=models.get_video_pk)
             format = request.POST['formats']
             return HttpResponseRedirect(reverse('media:convert', kwargs={
@@ -25,15 +24,7 @@ def index(request):
     else:
         form = Video_Form()
 
-    formats = {
-        "reduce_video": 'Compress video',
-        "v2a": 'mp4 to mp3',
-    }
-
-    return render(request, 'uploads/index.html', {
-        "form": form,
-        "format": formats
-    })
+    return render(request, 'uploads/index.html', {"form": form})
 
 
 def convert(request, format, key):
@@ -54,12 +45,12 @@ def convert(request, format, key):
 
 def download(request, format, key):
 
-    path = f'videos/{key}'
+    path = f'videos/'
     file_path = os.path.join(settings.MEDIA_ROOT, path)
 
     if os.path.exists(file_path):
         service.get_key(key)
-        file_path = service.get_file_info().file_path
+        file_path = service.get_file_info().output_path
         if format == 'reduce_video':
             file_path = file_path + ".mp4"
         if format == 'v2a':
