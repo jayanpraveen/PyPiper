@@ -6,19 +6,20 @@ from django.shortcuts import render
 from .models import Upload
 from . import service
 from .forms import Video_Form
-from uploads import models
 
 
 def index(request):
     if request.method == 'POST':
         form = Video_Form(data=request.POST, files=request.FILES)
         if form.is_valid():
-            form.save()
-            key = Upload.objects.get(pk=models.get_video_pk)
+            instance = Upload(video=request.FILES['video'])
+            instance.save()
             format = request.POST['formats']
+            preset = request.POST['presets']
             return HttpResponseRedirect(reverse('media:convert', kwargs={
                 'format': format,
-                'key': key
+                'preset': preset,
+                'key': str(instance),
             }))
 
     else:
@@ -27,13 +28,14 @@ def index(request):
     return render(request, 'uploads/index.html', {"form": form})
 
 
-def convert(request, format, key):
+def convert(request, format, preset, key):
+
     formats = ["reduce_video", "v2a"]
     if Upload.objects.filter(pk=key).exists() and format in formats:
         service.get_key(key)
 
         if format == 'reduce_video':
-            service.reduce_video()
+            service.reduce_video(preset)
 
         if format == 'v2a':
             service.video_to_audio()
@@ -45,10 +47,8 @@ def convert(request, format, key):
 
 def download(request, format, key):
 
-    path = f'videos/'
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
-
-    if os.path.exists(file_path):
+    instance = Upload.objects.get(id=key)
+    if os.path.exists(instance.video.path):
         service.get_key(key)
         file_path = service.get_file_info().output_path
         if format == 'reduce_video':

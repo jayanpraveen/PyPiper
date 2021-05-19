@@ -38,12 +38,11 @@ def video_to_audio():
     return None
 
 
-def reduce_video():
+def reduce_video(preset):
     media = get_file_info()
-
     proc = ffmpeg.input(media.input_path)
-    proc = proc.output(f'{media.output_path}.mp4', crf=32,
-                       preset='faster', vcodec='libx264', acodec='copy')
+    proc = proc.output(
+        f'{media.output_path}.mp4', crf=30, vcodec='libx264', acodec='copy', preset=preset)
     proc.run(overwrite_output=True)
 
     return None

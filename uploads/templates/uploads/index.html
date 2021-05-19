@@ -6,11 +6,23 @@
     {{form.as_ul}}
 
     <div>
+      <select name="presets" id="presets">
+          <option value="ultrafast">ultrafast</option>
+          <option value="superfast">superfast</option>
+          <option value="faster">faster</option>
+          <option value="medium" selected>medium</option>
+          <option value="slower">slower</option>
+          <option value="veryslow">veryslow</option>
+        </select>
+    </div> 
+
+    <div>
        <select name="formats" id="formats">
-            <option value="reduce_video">Compress video</option>
-            <option value="v2a">mp4 to mp3</option>
+          <option value="reduce_video">Compress video</option>
+          <option value="v2a" selected>mp4 to mp3</option>
        </select>
     </div>
+    <div>
     
 
     <button class="button" type="submit" value="">convert & download</button>
